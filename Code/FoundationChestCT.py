@@ -147,30 +147,30 @@ class CTDataset(Dataset):
         if self.randomize_vol_selection==False:
             while len(volumes_length) < self.volumes_per_batch:
                 try:
-                    vol = nib.load(self.df.at[self.df.index[idx], ' NIFTI location '])
+                    vol = nib.load(self.df.at[self.df.index[idx], 'volume_location'])
                     vol = np.array(vol.dataobj)
                     vol = self.vol_window(vol)
                     volumes[k] = vol.copy()
-                    volumes_length[k] = self.df.at[self.df.index[idx], 'axial_z_dim']
+                    volumes_length[k] = vol.shape[2]
                     k+=1
                     idx+=1
                 except:
-                    print(self.df.index[idx],  self.df.at[self.df.index[idx], ' NIFTI location '], 'PROBLEM')
+                    print(self.df.index[idx],  self.df.at[self.df.index[idx], 'volume_location'], 'PROBLEM')
                     idx+=1
                 idx = idx%len(self.df)
         else:
             while len(volumes_length) < self.volumes_per_batch:
                 try:
                     rand_idx = np.random.choice(len(self.df), 1)[0]
-                    vol = nib.load(self.df.at[self.df.index[rand_idx], ' NIFTI location '])
+                    vol = nib.load(self.df.at[self.df.index[rand_idx], 'volume_location'])
                     vol = np.array(vol.dataobj)
                     vol = self.vol_window(vol)
                     volumes[k] = vol.copy()
-                    volumes_length[k] = self.df.at[self.df.index[rand_idx], 'axial_z_dim']
+                    volumes_length[k] = vol.shape[2]
                     k+=1
                     #idx+=1
                 except:
-                    print(self.df.index[rand_idx], self.df.at[self.df.index[rand_idx], ' NIFTI location '], 'PROBLEM')
+                    print(self.df.index[rand_idx], self.df.at[self.df.index[rand_idx], 'volume_location'], 'PROBLEM')
                     #idx+=1
                 #idx = idx%len(self.df)
         X = None

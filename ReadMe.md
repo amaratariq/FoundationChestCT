@@ -14,4 +14,4 @@ The updated model file includes modifications made to the original vaector quant
 
 train.py contains code for self-supervised training through masked image pregion prediction.
 
-Dataloader is provided, please plug in your own data file (csv format) with the following columns
+Dataloader is provided, please plug in your own data file (csv format) with the volume_location 
