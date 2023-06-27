@@ -200,7 +200,7 @@ def mask_loss(data0, data1, data2, data3, mask_size):
     return l
 
 class CTDataset(Dataset):
-    def __init__(self, df, volumes_per_batch, batch_size_int, slice_gap, mask_fraction, image_size, n_channels, random_vol, random_transform):
+    def __init__(self, df, volumes_per_batch, batch_size_int, slice_gap, mask_fraction, image_size, n_channels, random_vol):
         
         self.df = df
         self.volumes_per_batch = volumes_per_batch
@@ -210,7 +210,6 @@ class CTDataset(Dataset):
         self.image_size = image_size
         self.n_channels = n_channels
         self.randomize_vol_selection = random_vol
-        self.random_transform = random_transform
         if self.mask_fraction is not None:
             self.mask_size = int((self.mask_fraction/100)*self.image_size)
         else:
@@ -239,7 +238,7 @@ class CTDataset(Dataset):
         a = 255.0*a
         r = None
         c = None
-        ###apply_mask
+
         if self.mask_size is not None:
             r = np.random.randint(self.image_size-self.mask_size-(2*self.margin))
             c = np.random.randint(self.image_size-self.mask_size-(2*self.margin))
@@ -381,9 +380,9 @@ def main():
     df_val = pd.read_csv(args.validation_file)
     print('data read .....')
 
-    datagen_train = CTDataset(df =  df_train.copy(), volumes_per_batch=volumes_per_batch, batch_size_int=batch_size, slice_gap=slice_gap, mask_fraction=mask_frac, image_size = image_size, n_channels=n_channels, random_vol=False, random_transform = random_transform) 
+    datagen_train = CTDataset(df =  df_train.copy(), volumes_per_batch=volumes_per_batch, batch_size_int=batch_size, slice_gap=slice_gap, mask_fraction=mask_frac, image_size = image_size, n_channels=n_channels, random_vol=False) 
 
-    datagen_val = CTDataset(df =  df_val.copy(), volumes_per_batch=volumes_per_batch, batch_size_int=batch_size, slice_gap=slice_gap, mask_fraction=mask_frac, image_size = image_size, n_channels=n_channels, random_vol=False, random_transform = random_transform) 
+    datagen_val = CTDataset(df =  df_val.copy(), volumes_per_batch=volumes_per_batch, batch_size_int=batch_size, slice_gap=slice_gap, mask_fraction=mask_frac, image_size = image_size, n_channels=n_channels, random_vol=False) 
 
 
     train_loader = DataLoader(dataset=datagen_train, shuffle=True, batch_size=1, num_workers=num_workers, pin_memory=True)
@@ -440,7 +439,7 @@ def main():
     logger = utils.get_logger(save_dir, "vqvae_1ch")
     logger.propagate = False
 
-    logger.info(' do_train: {}, n_iter: {}, batch_size: {}, volumes_per_batch:{}, slice_gap: {}, image_size: {}, depth: {}, hidden_dims:{}, drop_rates:{}, embedding_dim: {}, num_embeddings:{}, random_transform: {}, apply_mask: {}, reg weight mse: {}, reg weight mask mse: {},  reg weight_qloos: {}, reg_weight_ssim:{}, mask_size: {}, model_path:{}, model: {}'.format(do_train, n_iters, batch_size,  volumes_per_batch, slice_gap, image_size, depth, hidden_dims, drop_rates, embedding_dim, num_embeddings, random_transform, apply_mask, reg_weight_mse, reg_weight_mask_mse, reg_weight_qloss, reg_weight_ssim,  mask_frac, model_path,  model))
+    logger.info(' do_train: {}, n_iter: {}, batch_size: {}, volumes_per_batch:{}, slice_gap: {}, image_size: {}, depth: {}, hidden_dims:{}, drop_rates:{}, embedding_dim: {}, num_embeddings:{},  reg weight mse: {}, reg weight mask mse: {},  reg weight_qloos: {}, reg_weight_ssim:{}, mask_size: {}, model_path:{}, model: {}'.format(do_train, n_iters, batch_size,  volumes_per_batch, slice_gap, image_size, depth, hidden_dims, drop_rates, embedding_dim, num_embeddings,  reg_weight_mse, reg_weight_mask_mse, reg_weight_qloss, reg_weight_ssim,  mask_frac, model_path,  model))
     logger.info('saving to {}'.format(save_dir))
     sys.stdout.flush()
 
