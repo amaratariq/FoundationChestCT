@@ -1,6 +1,14 @@
 # FoundationChestCT
 Foundation Model for Chest CT
 
+The model has been trained with two types of self-supervision tasks
+* next slice prediction
+![Next Slice Prediction](next_slice.jpg)
+* masked region prediction
+![Masked Region Prediction](masked_region.jpg)
+
+
+
 ### Model weights 
 
 https://drive.google.com/drive/folders/1Ks_FZ3L7v2OPnsA1fbKyC0pSH9-_0gMn?usp=drive_link
