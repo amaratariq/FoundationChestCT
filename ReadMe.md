@@ -6,7 +6,7 @@ The model has been trained with two types of self-supervision tasks
 
 ![Next Slice Prediction](next_slice.jpg)
 
-* masked region prediction
+* Masked region prediction
 
 ![Masked Region Prediction](masked_region.jpg)
 
