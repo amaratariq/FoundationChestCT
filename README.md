@@ -26,4 +26,4 @@ https://drive.google.com/drive/folders/1Ks_FZ3L7v2OPnsA1fbKyC0pSH9-_0gMn?usp=dri
 
 ```python3 FoundationChestCT.py --train_file /path/to/training/file --validation_file /path/to/validation/data```
 
-    Dataloader is provided, please plug in your own data file (csv format) with the volume_location column
+Dataloader is provided, please plug in your own data file (csv format) with the volume_location column
