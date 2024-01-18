@@ -79,7 +79,7 @@ class ResidualLayer(nn.Module):
         self.resblock = nn.Sequential(nn.Conv2d(in_channels, out_channels,
                                                 kernel_size=3, padding=1, bias=False),
                                       nn.Dropout(p=d_rate),
-                                      nn.BatchNorm2d(out_channels, track_running_stats=False), #############################################
+                                      nn.BatchNorm2d(out_channels, track_running_stats=True), #############################################
                                       nn.ReLU(True),
                                       nn.Conv2d(out_channels, out_channels,
                                                 kernel_size=1, bias=False))
@@ -96,7 +96,7 @@ class ResidualLayerWODrop(nn.Module):
         self.resblock = nn.Sequential(nn.Conv2d(in_channels, out_channels,
                                                 kernel_size=3, padding=1, bias=False),
                                       #nn.Dropout(p=d_rate),
-                                      nn.BatchNorm2d(out_channels, track_running_stats=False), #############################################
+                                      nn.BatchNorm2d(out_channels, track_running_stats=True), #############################################
                                       nn.ReLU(True),
                                       nn.Conv2d(out_channels, out_channels,
                                                 kernel_size=1, bias=False))
@@ -114,13 +114,13 @@ class ResNextLayer(nn.Module):
         
         self.resblock = nn.Sequential(
                             nn.Conv2d(in_channels, out_channels, kernel_size=(1, 1), stride=(1, 1), bias=False),
-                            nn.BatchNorm2d(out_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False),
+                            nn.BatchNorm2d(out_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True),
                             nn.ReLU(inplace=True),
                             nn.Conv2d(out_channels, out_channels, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False),
-                            nn.BatchNorm2d(out_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False),
+                            nn.BatchNorm2d(out_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True),
                             nn.ReLU(inplace=True),
                             nn.Conv2d(out_channels, out_channels, kernel_size=(1, 1), stride=(1, 1), bias=False),
-                            nn.BatchNorm2d(out_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False),     
+                            nn.BatchNorm2d(out_channels, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True),     
                         )
 
     def forward(self, input: Tensor) -> Tensor:
@@ -139,7 +139,7 @@ class VQVAE_BN(BaseVAE):
                  up_sample = False,
                  depth=6,
                  **kwargs) -> None:
-        super(VQVAE, self).__init__()
+        super(VQVAE_BN, self).__init__()
 
         self.embedding_dim = embedding_dim
         self.num_embeddings = num_embeddings
@@ -163,7 +163,7 @@ class VQVAE_BN(BaseVAE):
                 nn.Sequential(
                     nn.Conv2d(in_channels, out_channels=h_dim,
                               kernel_size=4, stride=2, padding=1),
-                    nn.BatchNorm2d(h_dim, track_running_stats=False), 
+                    nn.BatchNorm2d(h_dim, track_running_stats=True), 
                     nn.Dropout(p=d_rate),
                     nn.LeakyReLU())
             )
@@ -173,7 +173,7 @@ class VQVAE_BN(BaseVAE):
             nn.Sequential(
                 nn.Conv2d(in_channels, in_channels,
                           kernel_size=3, stride=1, padding=1),
-                nn.BatchNorm2d(in_channels, track_running_stats=False), 
+                nn.BatchNorm2d(in_channels, track_running_stats=True), 
                 nn.Dropout(p=d_rate),
                 nn.LeakyReLU())
         )
@@ -186,7 +186,7 @@ class VQVAE_BN(BaseVAE):
             nn.Sequential(
                 nn.Conv2d(in_channels, embedding_dim,
                           kernel_size=1, stride=1),
-                nn.BatchNorm2d(embedding_dim, track_running_stats=False), 
+                nn.BatchNorm2d(embedding_dim, track_running_stats=True), 
                 nn.LeakyReLU())
         )
 
@@ -205,7 +205,7 @@ class VQVAE_BN(BaseVAE):
                           kernel_size=3,
                           stride=1,
                           padding=1),
-                nn.BatchNorm2d(hidden_dims[-1], track_running_stats=False), 
+                nn.BatchNorm2d(hidden_dims[-1], track_running_stats=True), 
                 nn.LeakyReLU())
         )
 
@@ -225,7 +225,7 @@ class VQVAE_BN(BaseVAE):
                                            kernel_size=4,
                                            stride=2,
                                            padding=1),
-                        nn.BatchNorm2d(hidden_dims[i+1], track_running_stats=False), 
+                        nn.BatchNorm2d(hidden_dims[i+1], track_running_stats=True), 
                         nn.LeakyReLU())
                 )
 
@@ -235,7 +235,7 @@ class VQVAE_BN(BaseVAE):
                                        out_channels=self.in_channels,#3,#1#use original number of in_channesl
                                        kernel_size=4,
                                        stride=2, padding=1),
-                    nn.BatchNorm2d(self.in_channels, track_running_stats=False), 
+                    nn.BatchNorm2d(self.in_channels, track_running_stats=True), 
                     nn.Tanh()))
         else:
             for i in range(len(hidden_dims) - 1):
@@ -246,7 +246,7 @@ class VQVAE_BN(BaseVAE):
                                            kernel_size=4,
                                            stride=2,
                                            padding=1),
-                        nn.BatchNorm2d(hidden_dims[i+1], track_running_stats=False), 
+                        nn.BatchNorm2d(hidden_dims[i+1], track_running_stats=True), 
                         nn.LeakyReLU())
                 )
 
@@ -256,7 +256,7 @@ class VQVAE_BN(BaseVAE):
                                        out_channels=self.in_channels,#3,#1#use original number of in_channesl
                                        kernel_size=4,
                                        stride=2, padding=1),
-                    nn.BatchNorm2d(self.in_channels, track_running_stats=False), 
+                    nn.BatchNorm2d(self.in_channels, track_running_stats=True), 
                     nn.Tanh()))
             
 
