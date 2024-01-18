@@ -4,8 +4,8 @@ Foundation Model for Chest CT
 Several self-supervision tasks were evaluated for model trianig as shown in the following figure. The code is provided for the best performing task, i.e., masked image region prediction.
 * Self-supervision tasks
 
-![Self-supervision schemes for self-supervised model training – (A) next slice prediction; (B) masked region prediction; (C) Random salt and pepper noise removal (D) rotation prediction, (E) flip prediction](ssl_schemes.png)
-
+![](ssl_schemes.png)
+*Self-supervision schemes for self-supervised model training – (A) next slice prediction; (B) masked region prediction; (C) Random salt and pepper noise removal (D) rotation prediction, (E) flip prediction*
 
 
 ### Model weights 
