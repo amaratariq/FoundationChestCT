@@ -1,20 +1,16 @@
 # FoundationChestCT
 Foundation Model for Chest CT
 
-The model has been trained with two types of self-supervision tasks
-* Next slice prediction
+Several self-supervision tasks were evaluated for model trianig as shown in the following figure. The code is provided for the best performing task, i.e., masked image region prediction.
+* Self-supervision tasks
 
-![Next Slice Prediction](next_slice.jpg)
-
-* Masked region prediction
-
-![Masked Region Prediction](masked_region.jpg)
+![Self-supervision schemes for self-supervised model training – (A) next slice prediction; (B) masked region prediction; (C) Random salt and pepper noise removal (D) rotation prediction, (E) flip prediction](ssl_schemes.png)
 
 
 
 ### Model weights 
 
-https://drive.google.com/drive/folders/1Ks_FZ3L7v2OPnsA1fbKyC0pSH9-_0gMn?usp=drive_link
+Model weights will be made available upon requests made to author.
 
 ## Training code
 - Clone and install VAE library from ```https://github.com/AntixK/PyTorch-VAE.git```

@@ -68,7 +68,7 @@ sys.stdout.flush()
     
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Finetune a transformers model on a text classification task")
+    parser = argparse.ArgumentParser(description="Self-supervised training of variational autoencoder on chest CT")
     parser.add_argument(
         "--do_train",
         type=str,
@@ -274,6 +274,7 @@ class CTDataset(Dataset):
                     vol = nib.load(self.df.at[self.df.index[idx], 'volume_location'])
                     vol = np.array(vol.dataobj)
                     vol = self.vol_window(vol)
+                    vol = np.rot90(vol, k =1)  ##### spine at the image base
                     volumes[k] = vol.copy()
                     volumes_length[k] = vol.shape[2]
                     k+=1
@@ -289,6 +290,7 @@ class CTDataset(Dataset):
                     vol = nib.load(self.df.at[self.df.index[rand_idx], 'volume_location'])
                     vol = np.array(vol.dataobj)
                     vol = self.vol_window(vol)
+                    vol = np.rot90(vol, k =1) ##### spine at the image base
                     volumes[k] = vol.copy()
                     volumes_length[k] = vol.shape[2]
                     k+=1
@@ -338,7 +340,7 @@ def main():
 
     do_train=True if args.do_train=='true' else False
     n_iters = args.n_iters
-    mask_frac = args.mask_frac  ###############masking fraction , 5 and 10 tested
+    mask_frac = args.mask_frac  ###############masking fraction , 5, 10, 20, 33 tested
     n_channels=args.n_channels
     image_size = args.image_size
     mask_size = int(image_size*(mask_frac/100))
